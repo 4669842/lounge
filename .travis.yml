@@ -11,12 +11,17 @@ matrix:
     - node_js: 8 # Version used to deploy to npm registry
       env: BUILD_ENV=production
 
-cache:
-  directories:
-    - ~/.npm
+cache: yarn
+
+before_install:
+  - yarn global add greenkeeper-lockfile@1
 
 before_script:
-  - NODE_ENV=$BUILD_ENV npm run build
+  - greenkeeper-lockfile-update
+  - NODE_ENV=$BUILD_ENV yarn build
+
+after_script:
+  - greenkeeper-lockfile-upload
 
 notifications:
   email:
